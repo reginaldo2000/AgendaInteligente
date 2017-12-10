@@ -13,7 +13,7 @@ and open the template in the editor.
                     <span class="panel-title">Cadastro de Pesos</span>
                 </div>
                 <div class="panel-body">
-                    <form>
+                    <form action="../transaction/PesoPHP.php" method="POST">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
