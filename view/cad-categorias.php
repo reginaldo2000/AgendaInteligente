@@ -7,10 +7,16 @@ and open the template in the editor.
 <html>
     <?php
     session_start();
+    require_once('../controller/CategoriaController.php');
     include_once('./imports/import_head.php');
+
+    $categoriaController = new CategoriaController();
     ?>
     <body>
         <section class="main-content">
+            <?php
+            include_once('./imports/import_mensagem.php');
+            ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="panel-title">Cadastro de Categorias</span>
@@ -21,7 +27,7 @@ and open the template in the editor.
                             <div class="col-sm-9 col-md-7">
                                 <div class="form-group">
                                     <label class="control-label">Descrição</label>
-                                    <input type="text" name="descricao" class="form-control text-uppercase">
+                                    <input type="text" name="descricao" class="form-control text-uppercase" required>
                                 </div>
                             </div>
                         </div>
@@ -55,12 +61,27 @@ and open the template in the editor.
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                <?php
+                                $desc = (isset($_POST['buscar'])) ? $_POST['consulta'] : "";
+                                foreach ($categoriaController->listar($desc) as $cat) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $cat['id']; ?></td>
+                                        <td class="text-uppercase"><?php echo utf8_encode($cat['descricao']); ?></td>
+                                        <td class="text-center">
+                                            <i class="fa fa-pencil" title="editar"></i>
+                                            <i class="fa fa-trash" title="excluir" onclick="location.href='../transaction/CategoriaPHP.php?id=<?php echo $cat['id'];?>'"></i>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </section>
+        <?php include_once('./imports/import_footer.php');?>
     </body>
 </html>

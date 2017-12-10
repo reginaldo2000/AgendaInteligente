@@ -39,5 +39,25 @@ class CategoriaDAO {
             return false;
         }
     }
+    
+    public function deletar(Categoria $cat) {
+        try {
+            $sql = "DELETE FROM $this->table WHERE id = :id";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindValue(':id', $cat->getId());
+            $stmt->execute();
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+    
+    public function listar($descricao) {
+        $sql = "SELECT * FROM $this->table WHERE descricao LIKE :desc";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(':desc', '%'.$descricao.'%');
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 
 }

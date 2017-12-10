@@ -24,4 +24,12 @@ class CategoriaController {
     public function cadastrar(Categoria $cat) {
         return $this->categoriaDAO->cadastrar($cat);
     }
+    
+    public function deletar(Categoria $cat) {
+        return $this->categoriaDAO->deletar($cat);
+    }
+    
+    public function listar($descricao) {
+        return $this->categoriaDAO->listar($descricao);
+    }
 }

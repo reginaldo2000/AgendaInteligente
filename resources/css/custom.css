@@ -19,6 +19,17 @@ section.login-content {
 .custom-btn {
     width: 100%;
 }
+table td i {
+    cursor: pointer;
+    font-size: 18px !important;
+}
+table td i:first-child {
+    color: #616161;
+}
+table td i:last-child {
+    color: #b00;
+    margin-left: 15px;
+}
 
 @media(min-width:992px) {
     section.main-content {

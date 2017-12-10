@@ -17,3 +17,12 @@ if(isset($_POST['cadastrar'])) {
     }
 }
 
+if(isset($_GET['id'])) {
+    $cat = new Categoria();
+    $cat->setId($_GET['id']);
+    if($categoriaController->deletar($cat)) {
+        $_SESSION['msg'] = Mensagens::getMsgSuccess("Categoria excluída com sucesso!");
+        header('location: ../view/cad-categorias.php');
+    }
+}
+
