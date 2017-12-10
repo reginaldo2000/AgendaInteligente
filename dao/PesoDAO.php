@@ -1,6 +1,7 @@
 <?php
 
 include_once ('../model/Peso.php');
+include_once('../connection/ConectaDB.php');
 
 class PesoDAO {
 

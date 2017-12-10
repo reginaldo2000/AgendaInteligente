@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include_once ('../model/Peso.php');
 include_once ('../controller/PesoController.php');
 include_once ('../resources/Mensagens.php');
@@ -8,17 +10,16 @@ $peso = new Peso();
 $pesoController = PesoController::getInstance();
 
 if (isset($_POST['cadastrar'])) {
-    $valor = $_POST['valor'];
-    $descricao = utf8_decode($_POST['descricao']);
-
-    $peso->setValor($valor);
-    $peso->setDescricao($descricao);
+    $peso->setValor($_POST['peso']);
+    $peso->setDescricao(utf8_decode($_POST['descricao']));
 
     $resultCadastrar = $pesoController->cadastrar($peso);
     if ($resultCadastrar) {
-        $_SESSION['msg'] = Mensagens::getMsgSuccess("Peso cadastrado com sucesso.");
+        $_SESSION['msg'] = Mensagens::getMsgSuccess("Peso cadastrado com sucesso!");
+        header('location: ../view/cad-pesos.php');
     } else {
         $_SESSION['msg'] = Mensagens::getMsgError("Erro ao cadastrar o peso!");
+        header('location: ../view/cad-pesos.php');
     }
 }
 
