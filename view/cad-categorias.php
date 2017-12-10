@@ -10,9 +10,44 @@ and open the template in the editor.
     require_once('../controller/CategoriaController.php');
     include_once('./imports/import_head.php');
 
-    $categoriaController = new CategoriaController();
+    $categoriaController = CategoriaController::getInstance();
     ?>
     <body>
+        <div class="modal fade" tabindex="-1" role="dialog" id="modal-edicao">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Editar dados da categoria</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="../transaction/CategoriaPHP.php">
+                            <input type="text" name="id" class="hidden" id="form-id">
+                            <div class="row">
+                                <div class="col-sm-9 col-md-7">
+                                    <div class="form-group">
+                                        <label class="control-label">Descrição</label>
+                                        <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-3">
+                                            <button name="atualizar" class="btn btn-primary custom-btn">
+                                                <i class="fa fa-edit"></i> &nbsp; Atualizar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <section class="main-content">
             <?php
             include_once('./imports/import_mensagem.php');
@@ -69,8 +104,8 @@ and open the template in the editor.
                                         <td><?php echo $cat['id']; ?></td>
                                         <td class="text-uppercase"><?php echo utf8_encode($cat['descricao']); ?></td>
                                         <td class="text-center">
-                                            <i class="fa fa-pencil" title="editar"></i>
-                                            <i class="fa fa-trash" title="excluir" onclick="location.href='../transaction/CategoriaPHP.php?id=<?php echo $cat['id'];?>'"></i>
+                                            <i class="fa fa-pencil" title="editar" onclick="passaCategoria(<?php echo $cat['id'];?>,'<?php echo $cat['descricao'];?>')" data-toggle="modal" data-target="#modal-edicao"></i>
+                                            <i class="fa fa-trash" title="excluir" onclick="location.href = '../transaction/CategoriaPHP.php?id=<?php echo $cat['id']; ?>'"></i>
                                         </td>
                                     </tr>
                                     <?php
@@ -82,6 +117,7 @@ and open the template in the editor.
                 </div>
             </div>
         </section>
-        <?php include_once('./imports/import_footer.php');?>
+        <?php include_once('./imports/import_footer.php'); ?>
+        <script src="../resources/js/CategoriaJS.js"></script>
     </body>
 </html>

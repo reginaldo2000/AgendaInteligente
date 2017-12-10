@@ -14,6 +14,7 @@
 require_once('../dao/CategoriaDAO.php');
 
 class CategoriaController {
+    
     private static $instance;
     private $categoriaDAO = null;
     
@@ -32,6 +33,10 @@ class CategoriaController {
     
     public function cadastrar(Categoria $cat) {
         return $this->categoriaDAO->cadastrar($cat);
+    }
+    
+    public function atualizar(Categoria $cat) {
+        return $this->categoriaDAO->atualizar($cat);
     }
     
     public function deletar(Categoria $cat) {

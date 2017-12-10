@@ -45,6 +45,19 @@ class CategoriaDAO {
         }
     }
     
+    public function atualizar(Categoria $categoria) {
+        try {
+            $sql = "UPDATE $this->table SET descricao = :desc WHERE id = :id";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindValue(':desc', $categoria->getDescricao());
+            $stmt->bindValue(':id', $categoria->getId());
+            $stmt->execute();
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+    
     public function deletar(Categoria $cat) {
         try {
             $sql = "DELETE FROM $this->table WHERE id = :id";
