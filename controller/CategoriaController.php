@@ -14,10 +14,19 @@
 require_once('../dao/CategoriaDAO.php');
 
 class CategoriaController {
-    
+    private static $instance;
     private $categoriaDAO = null;
     
-    function __construct() {
+    public static function getInstance(){
+        
+        if (!self::$instance){
+            self::$instance = new self();
+        }
+        
+        return self::$instance;
+    }
+    
+    private function __construct() {
         $this->categoriaDAO = CategoriaDAO::getInstance();
     }
     

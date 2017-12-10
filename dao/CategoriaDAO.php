@@ -16,15 +16,20 @@ require_once('../connection/ConectaDB.php');
 class CategoriaDAO {
 
     private $table = "agend_categorias";
-    private $instance = null;
+    private static $instance;
     private $con;
 
-    function __construct() {
-        $this->con = ConectaDB::getConnection();
+    public static function getInstance(){
+        
+        if (!self::$instance){
+            self::$instance = new self();
+        }
+        
+        return self::$instance;
     }
-
-    public static function getInstance() {
-        return new CategoriaDAO();
+    
+    private function __construct() {
+        $this->con = ConectaDB::getConnection();
     }
 
     public function cadastrar(Categoria $categoria) {
