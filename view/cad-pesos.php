@@ -11,6 +11,46 @@ and open the template in the editor.
     include_once('./imports/import_head.php');
     ?>
     <body>
+        <div class="modal fade" tabindex="-1" role="dialog" id="modal-edicao">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Editar dados do peso</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="../transaction/PesoPHP.php" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Valor do Peso</label>
+                                        <input type="number" name="peso" class="form-control" id="valor">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Descrição</label>
+                                        <input type="text" name="descricao" class="form-control text-uppercase">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-3">
+                                            <button name="atualizar" class="btn btn-primary custom-btn">
+                                                <i class="fa fa-save"></i> &nbsp; Atualizar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <section class="main-content">
             <?php include_once('./imports/import_mensagem.php'); ?>
             <div class="panel panel-default">
@@ -70,9 +110,12 @@ and open the template in the editor.
                                     ?>
                                     <tr>
                                         <td><?php echo $peso['id']; ?></td>
-                                        <td><?php echo $peso['valor'];?></td>
-                                        <td class="text-uppercase"><?php echo utf8_encode($peso['descricao']);?></td>
-                                        <td></td>
+                                        <td><?php echo $peso['valor']; ?></td>
+                                        <td class="text-uppercase"><?php echo utf8_encode($peso['descricao']); ?></td>
+                                        <td class="text-center">
+                                            <i class="fa fa-pencil" data-toggle="modal" data-target="#modal-edicao"></i>
+                                            <i class="fa fa-trash"></i>
+                                        </td>
                                     </tr>
                                     <?php
                                 }
