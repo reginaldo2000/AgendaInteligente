@@ -24,7 +24,7 @@ if (isset($_POST['cadastrar'])) {
 }
 
 if (isset($_POST['atualizar'])) {
-    $valor = $_POST['valor'];
+    $valor = $_POST['peso'];
     $descricao = utf8_decode($_POST['descricao']);
     $id = $_POST['id'];
 
@@ -35,20 +35,33 @@ if (isset($_POST['atualizar'])) {
     $resultAtualizar = $pesoController->atualizar($peso);
     if ($resultAtualizar) {
         $_SESSION['msg'] = Mensagens::getMsgSuccess("Peso atualizado com sucesso.");
+        header('location: ../view/cad-pesos.php');
     } else {
         $_SESSION['msg'] = Mensagens::getMsgError("Erro ao atualizar o peso!");
+        header('location: ../view/cad-pesos.php');
     }
 }
 if (isset($_GET['deletar'])) {
-    
+
     $id = $_GET['id'];
     $peso->setId($id);
     $resultDeletar = $pesoController->deletar($peso);
     if ($resultDeletar) {
-        $_SESSION['msg'] = Mensagens::getMsgSuccess("Peso deletado com sucesso.");
+        $_SESSION['msg'] = Mensagens::getMsgSuccess("Peso deletado com sucesso!");
+        header('location: ../view/cad-pesos.php');
     } else {
         $_SESSION['msg'] = Mensagens::getMsgError("Erro ao deletar o peso!");
+        header('location: ../view/cad-pesos.php');
     }
+}
+
+if (isset($_POST['selecionar'])) {
+    $peso = $pesoController->selecionar($_POST['id']);
+    $vetor[] = array();
+    $vetor[0]['id'] = $peso->id;
+    $vetor[0]['valor'] = $peso->valor;
+    $vetor[0]['descricao'] = utf8_encode($peso->descricao);
+    echo json_encode($vetor);
 }
 
 

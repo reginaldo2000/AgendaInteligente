@@ -36,4 +36,8 @@ class PesoController {
     public function atualizar(Peso $peso){
         return $this->pesoDAO->atualizar($peso);
     }
+    
+    public function selecionar($id) {
+        return $this->pesoDAO->selecionar($id);
+    } 
 }

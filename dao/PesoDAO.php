@@ -53,7 +53,7 @@ class PesoDAO {
 
     public function listar($descricao) {
         try {
-            $sql = "SELECT * FROM $this->table WHERE descricao LIKE :desc";
+            $sql = "SELECT * FROM $this->table WHERE descricao LIKE :desc ORDER BY valor";
             $stmt = $this->con->prepare($sql);
             $stmt->bindValue(':desc', '%' . $descricao . '%');
             $stmt->execute();
@@ -72,11 +72,24 @@ class PesoDAO {
             $stmt->bindValue(":valor", $peso->getValor());
             $stmt->bindValue(':desc', $peso->getDescricao());
             $stmt->bindValue(":id", $peso->getId());
-            
+            $stmt->execute();
             return true;
         } catch (Exception $ex) {
             $ex->getMessage();
             return false;
+        }
+    }
+    
+    public function selecionar($id) {
+        try {
+            $sql = "SELECT * FROM $this->table WHERE id = :id";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindValue(':id', $id);
+            $stmt->execute();
+            $peso = $stmt->fetch(PDO::FETCH_OBJ);
+            return $peso;
+        } catch (Exception $ex) {
+            return null;
         }
     }
 

@@ -8,9 +8,11 @@ function getPesoFromId(peso_id) {
         type: 'POST',
         dataType: 'json',
         url: '../transaction/PesoPHP.php',
-        data: {id: peso_id},
+        data: {id: peso_id, selecionar:1},
         success: function(retorno) {
-            $().val();
+            $('#valor').val(retorno[0]['valor']);
+            $('#descricao').val(retorno[0]['descricao']);
+            $('#peso_id').val(retorno[0]['id']);
         }
     });
 }

@@ -20,6 +20,7 @@ and open the template in the editor.
                     </div>
                     <div class="modal-body">
                         <form action="../transaction/PesoPHP.php" method="POST">
+                            <input type="text" name="id" class="hidden" id="peso_id">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -30,7 +31,7 @@ and open the template in the editor.
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Descrição</label>
-                                        <input type="text" name="descricao" class="form-control text-uppercase">
+                                        <input type="text" name="descricao" class="form-control text-uppercase" id="descricao">
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +40,7 @@ and open the template in the editor.
                                     <div class="row">
                                         <div class="col-sm-4 col-md-3">
                                             <button name="atualizar" class="btn btn-primary custom-btn">
-                                                <i class="fa fa-save"></i> &nbsp; Atualizar
+                                                <i class="fa fa-edit"></i> &nbsp; Atualizar
                                             </button>
                                         </div>
                                     </div>
@@ -113,8 +114,8 @@ and open the template in the editor.
                                         <td><?php echo $peso['valor']; ?></td>
                                         <td class="text-uppercase"><?php echo utf8_encode($peso['descricao']); ?></td>
                                         <td class="text-center">
-                                            <i class="fa fa-pencil" data-toggle="modal" data-target="#modal-edicao"></i>
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-pencil" onclick="getPesoFromId(<?php echo $peso['id'];?>);"data-toggle="modal" data-target="#modal-edicao"></i>
+                                            <i class="fa fa-trash" onclick="location.href = '../transaction/PesoPHP.php?id=<?php echo $peso['id'];?>&deletar=1'"></i>
                                         </td>
                                     </tr>
                                     <?php
@@ -129,5 +130,6 @@ and open the template in the editor.
         <?php
         include_once('./imports/import_footer.php');
         ?>
+        <script src="../resources/js/PesoJS.js"></script>
     </body>
 </html>
