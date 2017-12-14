@@ -37,12 +37,63 @@ class AgendaDAO {
             return false;
         }
     }
-    
+
     public function gravarHistorico($descricao) {
         $sql = "INSERT INTO agend_hist_agenda_descricao (hist_name) VALUES(:descricao)";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(':descricao', $descricao);
         $stmt->execute();
+    }
+
+    public function getHistorico($descricao) {
+        try {
+            $sql = "SELECT * FROM agend_hist_agenda_descricao WHERE hist_name LIKE :desc";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindValue(':desc', "%" . $descricao . "%");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+
+    public function verificaChoqueAgenda(Agenda $agenda) {
+        $sql = "SELECT * FROM $this->table WHERE data = :data AND hora = :hora";
+        $st = $this->con->prepare($sql);
+        $st->bindValue(':data', $agenda->getData());
+        $st->bindValue(':hora', $agenda->getHora());
+        $st->execute();
+        if ($st->rowCount() > 0) {
+            return $st->fetchAll();
+        }
+        return null;
+    }
+
+    public function verificaSugestoes($data, $hora) {
+        $cont = 0;
+        $string = '';
+        $dataI = $data;
+        $dataF = date('Y-m-d', strtotime('+1 day', strtotime($dataI)));
+        try {
+            while ($cont < 3) {
+                $sql1 = "SELECT * FROM $this->table WHERE data BETWEEN :dataI AND :dataF";
+                $st1 = $this->con->prepare($sql1);
+                $st1->bindValue(':dataI', $dataI);
+                $st1->bindValue(':dataF', $dataF);
+                $st1->execute();
+                if ($st1->rowCount() == 0) {
+                    $string .= '<li>' . date('d/m/Y', strtotime($dataI)) . " " . $hora . '</li>';
+                    $cont++;
+                }
+                $novaData = date('Y-m-d', strtotime('+1 day', strtotime($dataI)));
+                $dataI = $novaData;
+                $dataF = date('Y-m-d', strtotime('+1 day', strtotime($dataI)));
+            }
+            return $string;
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            return "testo";
+        }
     }
 
 }

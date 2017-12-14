@@ -10,7 +10,7 @@ and open the template in the editor.
 
 section.main-content {
     width: 96%;
-    margin: 100px auto;
+    margin: 20px auto 100px auto;
 }
 section.login-content {
     width: 96%;
@@ -55,8 +55,6 @@ table td i:last-child {
 }
 .header {
     background-color: #2e6da4;
-    position: absolute;
-    top: 0;
     width: 100%;
     padding: 10px 20px 15px 20px;
 }
