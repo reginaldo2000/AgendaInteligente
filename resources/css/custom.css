@@ -30,7 +30,40 @@ table td i:last-child {
     color: #b00;
     margin-left: 15px;
 }
-
+.footer {
+    background-color: #555;
+    padding: 20px;
+}
+.footer .developers {
+    display: inline-block;
+}
+.footer .developers ul {
+    list-style: none;
+}
+.footer .logo-footer {
+    display: inline-block;
+    width: 30%;
+    margin-left: 20%;
+}
+.footer .developers ul li {
+    color: #fff;
+}
+.footer .developers ul li:first-child {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 2.5;
+}
+.header {
+    background-color: #2e6da4;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 10px 20px 15px 20px;
+}
+.header h3 {
+    color: #fff;
+    font-weight: bold;
+}
 @media(min-width:992px) {
     section.main-content {
         width: 800px;
