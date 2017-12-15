@@ -6,6 +6,7 @@
 
 $(document).ready(function(){
     $('#modal-verificacao').modal('show');
+    $('#modal-alerta-horario').modal('show');
 });
 
 function abrirModal() {

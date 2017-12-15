@@ -6,11 +6,12 @@
     require_once('../controller/CategoriaController.php');
     require_once('../controller/PesoController.php');
     require_once('../controller/AgendaController.php');
-    
+    require_once('../resources/Mensagens.php');
+
     $categoriaController = CategoriaController::getInstance();
     $pesoController = PesoController::getInstance();
     $agendaController = AgendaController::getInstance();
-    
+
     $categoria = "";
     $peso = "";
     $descricao = "";
@@ -99,8 +100,9 @@
                                     </div>
                                     <div class="panel-body">
                                         <ul>
-                                            <?php 
-                                            echo $agendaController->verificaSugestoes($data, $hora);                                            ;
+                                            <?php
+                                            echo $agendaController->verificaSugestoes($data, $hora);
+                                            ;
                                             ?>
                                         </ul>
                                     </div>
@@ -141,6 +143,58 @@
         }
         ?>
 
+        <?php
+        if (isset($_SESSION['alertaHora'])) {
+            ?>
+            <div class="modal fade" tabindex="-1" role="dialog" id="modal-alerta-horario">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Alerta de Conflito</h4>
+                        </div>
+                        <div class="modal-body">
+                            <?php
+                            echo Mensagens::getMsgInfo("Foram encontrados possíveis conflitos!");
+                            ?>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Data</th>
+                                            <th>Hora</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $listaHorarios = $_SESSION['alertaHora'];
+                                        foreach ($listaHorarios as $hr) {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $hr['descricao']; ?></td>
+                                                <td><?php ?></td>
+                                                <td><?php ?></td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-primary">Salvar mudanças</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <?php
+        }
+        ?>
+
+
         <?php include_once('./imports/import_header.php'); ?>
         <section class="main-content">
             <?php include_once('./imports/import_mensagem.php'); ?>
@@ -159,7 +213,7 @@
                                         <?php
                                         foreach ($categoriaController->listar() as $cat) {
                                             ?>
-                                            <option value="<?php echo $cat['id']; ?>" <?php echo ($categoria == $cat['id'])?"selected":"";?>><?php echo utf8_encode($cat['descricao']); ?></option>
+                                            <option value="<?php echo $cat['id']; ?>" <?php echo ($categoria == $cat['id']) ? "selected" : ""; ?>><?php echo utf8_encode($cat['descricao']); ?></option>
                                             <?php
                                         }
                                         ?>
@@ -174,7 +228,7 @@
                                         <?php
                                         foreach ($pesoController->listar("") as $peso) {
                                             ?>
-                                        <option value="<?php echo $peso['id']; ?>" <?php echo ($peso == $peso['id'])?"selected":"";?>><?php echo $peso['valor'] . " - " . utf8_encode($peso['descricao']); ?></option>
+                                            <option value="<?php echo $peso['id']; ?>" <?php echo ($peso == $peso['id']) ? "selected" : ""; ?>><?php echo $peso['valor'] . " - " . utf8_encode($peso['descricao']); ?></option>
                                             <?php
                                         }
                                         ?>
@@ -187,7 +241,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Descrição:</label>
                                     <div class="input-group">
-                                        <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao-agenda" onkeyup="abrirModal();" aria-describedby="basic-addon2" value="<?php echo $descricao;?>">
+                                        <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao-agenda" onkeyup="abrirModal();" aria-describedby="basic-addon2" value="<?php echo $descricao; ?>">
                                         <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                                     </div>
                                 </div>
@@ -197,13 +251,13 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="control-label">Data:</label>
-                                    <input type="date" name="data" class="form-control text-uppercase" value="<?php echo $data;?>">
+                                    <input type="date" name="data" class="form-control text-uppercase" value="<?php echo $data; ?>">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="control-label">Hora:</label>
-                                    <input type="text" name="hora" class="form-control" value="<?php echo $hora;?>">
+                                    <input type="text" name="hora" class="form-control" value="<?php echo $hora; ?>">
                                 </div>
                             </div>
                         </div>

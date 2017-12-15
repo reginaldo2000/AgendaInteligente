@@ -7,7 +7,7 @@ class Peso {
     private $descricao;
     
     public function __construct() {
-        ;
+        
     }
     function getId() {
         return $this->id;

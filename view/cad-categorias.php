@@ -48,6 +48,10 @@ and open the template in the editor.
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        
+        <?php
+        include_once('./imports/import_header.php');
+        ?>
         <section class="main-content">
             <?php
             include_once('./imports/import_mensagem.php');

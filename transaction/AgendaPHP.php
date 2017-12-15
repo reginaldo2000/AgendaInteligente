@@ -12,22 +12,36 @@ if (isset($_POST['cadastrar'])) {
     $agenda->setPesoID($_POST['peso']);
     $agenda->setDescricao(utf8_decode($_POST['descricao']));
     $agenda->setData($_POST['data']);
-    $agenda->setHora($_POST['hora']);
+    $agenda->setHora(date('H:i:s', strtotime($_POST['hora'])));
 
     if ($agendaController->verificar($agenda) == null) {
-        
-        if ($agendaController->cadastrar($agenda)) {
-            $_SESSION['msg'] = Mensagens::getMsgSuccess("Agenda cadastrada com sucesso!");
-            header('location: ../view/cad-agenda.php');
+        $listaHorarios = $agendaController->verificaHorariosProximos($agenda->getData());
+        if ($listaHorarios == null) {
+            if ($agendaController->cadastrar($agenda)) {
+                $_SESSION['msg'] = Mensagens::getMsgSuccess("Agenda cadastrada com sucesso!");
+                header('location: ../view/cad-agenda.php');
+            } else {
+                $_SESSION['msg'] = Mensagens::getMsgError("Erro ao tentar cadastrar a agenda!");
+                header('location: ../view/cad-agenda.php');
+            }
         } else {
-            $_SESSION['msg'] = Mensagens::getMsgError("Erro ao tentar cadastrar a agenda!");
-            header('location: ../view/cad-agenda.php');
+            foreach ($listaHorarios as $hor) {
+                $_SESSION['categoria'] = $agenda->getCategoriaID();
+                $_SESSION['peso'] = $agenda->getPesoID();
+                $_SESSION['descricao'] = utf8_encode($agenda->getDescricao());
+                $_SESSION['data'] = $agenda->getData();
+                $_SESSION['hora'] = $agenda->getHora();
+                if (($agenda->getHora() - $hor['hora']) == 1 || ($agenda->getHora() - $hor['hora']) == -1) {
+                    $_SESSION['alertaHora'] = $listaHorarios;
+                    header('location: ../view/cad-agenda.php');
+                }
+            }
         }
     } else {
         $_SESSION['listaAgenda'] = $agendaController->verificar($agenda);
         $_SESSION['categoria'] = $agenda->getCategoriaID();
         $_SESSION['peso'] = $agenda->getPesoID();
-        $_SESSION['descricao'] = $agenda->getDescricao();
+        $_SESSION['descricao'] = utf8_encode($agenda->getDescricao());
         $_SESSION['data'] = $agenda->getData();
         $_SESSION['hora'] = $agenda->getHora();
         header('location: ../view/cad-agenda.php');
@@ -38,7 +52,7 @@ if (isset($_POST['busc'])) {
     $string = null;
     foreach ($agendaController->getHistorico($_POST['desc']) as $hist) {
         $nome = utf8_encode($hist['hist_name']);
-        $string .= '<tr data-dismiss="modal"><td class="text-uppercase" onclick=selecionarDesc("' . $nome . '");>' . $nome . '</td></tr>';
+        $string .= '<tr data-dismiss="modal"><td class="text-uppercase" onclick="selecionarDesc(\'' . $nome . '\');">' . $nome . '</td></tr>';
     }
     echo $string;
 }

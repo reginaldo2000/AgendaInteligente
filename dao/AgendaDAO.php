@@ -92,7 +92,25 @@ class AgendaDAO {
             return $string;
         } catch (Exception $ex) {
             echo $ex->getMessage();
-            return "testo";
+            return null;
+        }
+    }
+
+    public function verificaHorariosProximos($data) {
+        try {
+            $sql = "SELECT * FROM $this->table WHERE data = :data AND hora BETWEEN :horaI AND :horaF";
+            $st = $this->con->prepare($sql);
+            $st->bindValue(':data', $data);
+            $st->bindValue(':horaI', date('H:i:s', strtotime("00:01:00")));
+            $st->bindValue(':horaF', date('H:i:s', strtotime("23:59:55")));
+            $st->execute();
+            if ($st->rowCount() == 0) {
+                return null;
+            }
+            return $st->fetchAll();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            return null;
         }
     }
 
