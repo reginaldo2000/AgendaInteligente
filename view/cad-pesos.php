@@ -25,13 +25,13 @@ and open the template in the editor.
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Valor do Peso</label>
-                                        <input type="number" name="peso" class="form-control" id="valor">
+                                        <input type="number" name="peso" class="form-control" id="valor" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Descrição</label>
-                                        <input type="text" name="descricao" class="form-control text-uppercase" id="descricao">
+                                        <input type="text" name="descricao" class="form-control text-uppercase" id="descricao" required>
                                     </div>
                                 </div>
                             </div>
@@ -69,13 +69,13 @@ and open the template in the editor.
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Valor do Peso</label>
-                                        <input type="number" name="peso" class="form-control">
+                                        <input type="number" name="peso" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Descrição</label>
-                                        <input type="text" name="descricao" class="form-control text-uppercase">
+                                        <input type="text" name="descricao" class="form-control text-uppercase" required>
                                     </div>
                                 </div>
                             </div>
