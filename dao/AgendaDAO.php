@@ -96,13 +96,13 @@ class AgendaDAO {
         }
     }
 
-    public function verificaHorariosProximos($data) {
+    public function verificaHorariosProximos($data, $hora) {
         try {
-            $sql = "SELECT * FROM $this->table WHERE data = :data AND hora BETWEEN :horaI AND :horaF";
+            $sql = "SELECT a.*, p.valor FROM $this->table a INNER JOIN agend_peso p ON p.id = a.peso_id WHERE data = :data AND hora BETWEEN :horaI AND :horaF";
             $st = $this->con->prepare($sql);
             $st->bindValue(':data', $data);
-            $st->bindValue(':horaI', date('H:i:s', strtotime("00:01:00")));
-            $st->bindValue(':horaF', date('H:i:s', strtotime("23:59:55")));
+            $st->bindValue(':horaI', date('H:i:s', strtotime('-1 hour', strtotime($hora))));
+            $st->bindValue(':horaF', date('H:i:s', strtotime('+1 hour', strtotime($hora))));
             $st->execute();
             if ($st->rowCount() == 0) {
                 return null;

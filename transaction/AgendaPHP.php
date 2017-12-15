@@ -15,7 +15,7 @@ if (isset($_POST['cadastrar'])) {
     $agenda->setHora(date('H:i:s', strtotime($_POST['hora'])));
 
     if ($agendaController->verificar($agenda) == null) {
-        $listaHorarios = $agendaController->verificaHorariosProximos($agenda->getData());
+        $listaHorarios = $agendaController->verificaHorariosProximos($agenda->getData(), $agenda->getHora());
         if ($listaHorarios == null) {
             if ($agendaController->cadastrar($agenda)) {
                 $_SESSION['msg'] = Mensagens::getMsgSuccess("Agenda cadastrada com sucesso!");
@@ -25,17 +25,13 @@ if (isset($_POST['cadastrar'])) {
                 header('location: ../view/cad-agenda.php');
             }
         } else {
-            foreach ($listaHorarios as $hor) {
-                $_SESSION['categoria'] = $agenda->getCategoriaID();
-                $_SESSION['peso'] = $agenda->getPesoID();
-                $_SESSION['descricao'] = utf8_encode($agenda->getDescricao());
-                $_SESSION['data'] = $agenda->getData();
-                $_SESSION['hora'] = $agenda->getHora();
-                if (($agenda->getHora() - $hor['hora']) == 1 || ($agenda->getHora() - $hor['hora']) == -1) {
-                    $_SESSION['alertaHora'] = $listaHorarios;
-                    header('location: ../view/cad-agenda.php');
-                }
-            }
+            $_SESSION['categoria'] = $agenda->getCategoriaID();
+            $_SESSION['peso'] = $agenda->getPesoID();
+            $_SESSION['descricao'] = utf8_encode($agenda->getDescricao());
+            $_SESSION['data'] = $agenda->getData();
+            $_SESSION['hora'] = $agenda->getHora();
+            $_SESSION['alertaHora'] = $listaHorarios;
+            header('location: ../view/cad-agenda.php');
         }
     } else {
         $_SESSION['listaAgenda'] = $agendaController->verificar($agenda);

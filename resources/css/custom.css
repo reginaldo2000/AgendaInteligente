@@ -14,7 +14,11 @@ section.main-content {
 }
 section.login-content {
     width: 96%;
-    margin: 100px auto;
+    margin: 50px auto 100px auto;
+}
+section.home-content {
+    width: 96%;
+    margin: 50px auto 100px auto;
 }
 .custom-btn {
     width: 100%;
@@ -56,11 +60,36 @@ table td i:last-child {
 .header {
     background-color: #2e6da4;
     width: 100%;
-    padding: 10px 20px 15px 20px;
+    padding: 10px 20px 15px 60px;
 }
 .header h3 {
     color: #fff;
     font-weight: bold;
+}
+.member {
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 60px;
+}
+.member img {
+    width: 40%;
+    border-radius: 50%;
+    box-shadow: 2px 3px 3px 1px #555;
+}
+.member .title {
+    font-weight: bold;
+    font-size: 18px;
+}
+.member p {
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-top: 15px;
+}
+nav.menu {
+    position: absolute;
+    top: 25px;
+    left: 15px;
 }
 @media(min-width:992px) {
     section.main-content {
@@ -68,5 +97,8 @@ table td i:last-child {
     }
     section.login-content {
         width: 400px;
+    }
+    section.home-content {
+        width: 80%;
     }
 }

@@ -18,7 +18,7 @@
     $data = "";
     $hora = "";
 
-    if (isset($_SESSION['listaAgenda'])) {
+    if (isset($_SESSION['listaAgenda']) || isset($_SESSION['alertaHora'])) {
         $categoria = $_SESSION['categoria'];
         $peso = $_SESSION['peso'];
         $descricao = $_SESSION['descricao'];
@@ -102,7 +102,6 @@
                                         <ul>
                                             <?php
                                             echo $agendaController->verificaSugestoes($data, $hora);
-                                            ;
                                             ?>
                                         </ul>
                                     </div>
@@ -157,30 +156,59 @@
                             <?php
                             echo Mensagens::getMsgInfo("Foram encontrados possíveis conflitos!");
                             ?>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Descrição</th>
-                                            <th>Data</th>
-                                            <th>Hora</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $listaHorarios = $_SESSION['alertaHora'];
-                                        foreach ($listaHorarios as $hr) {
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $hr['descricao']; ?></td>
-                                                <td><?php ?></td>
-                                                <td><?php ?></td>
-                                            </tr>
-                                            <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">Possível Conflito</span>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Peso</th>
+                                                    <th>Descrição</th>
+                                                    <th>Data</th>
+                                                    <th>Hora</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $listaHorarios = $_SESSION['alertaHora'];
+                                                foreach ($listaHorarios as $hr) {
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $hr['valor'];?></td>
+                                                        <td><?php echo utf8_encode($hr['descricao']); ?></td>
+                                                        <td><?php echo date('d/m/Y', strtotime($hr['data'])); ?></td>
+                                                        <td><?php echo date('H:i', strtotime($hr['hora'])); ?></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">Horário a ser agendado!</span>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -192,84 +220,89 @@
             </div><!-- /.modal -->
             <?php
         }
+        unset($_SESSION['alertaHora']);
         ?>
 
-
-        <?php include_once('./imports/import_header.php'); ?>
-        <section class="main-content">
-            <?php include_once('./imports/import_mensagem.php'); ?>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Cadastro de Agenda</span>
-                </div>
-                <div class="panel-body">
-                    <form method="post" action="../transaction/AgendaPHP.php" autocomplete="off">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label">Categoria:</label>
-                                    <select name="categoria" class="form-control text-uppercase" >
-                                        <option value="">Selecione uma</option>
-                                        <?php
-                                        foreach ($categoriaController->listar() as $cat) {
-                                            ?>
-                                            <option value="<?php echo $cat['id']; ?>" <?php echo ($categoria == $cat['id']) ? "selected" : ""; ?>><?php echo utf8_encode($cat['descricao']); ?></option>
+        <?php
+        include_once('./imports/import_header.php');
+        include_once('./imports/import_menu.php');
+        ?>
+        <div class="container-fluid">
+            <section class="main-content">
+                <?php include_once('./imports/import_mensagem.php'); ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="panel-title">Cadastro de Agenda</span>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" action="../transaction/AgendaPHP.php" autocomplete="off">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Categoria:</label>
+                                        <select name="categoria" class="form-control text-uppercase" >
+                                            <option value="">Selecione uma</option>
                                             <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label">Peso:</label>
-                                    <select name="peso" class="form-control text-uppercase">
-                                        <option value="">Selecione um</option>
-                                        <?php
-                                        foreach ($pesoController->listar("") as $peso) {
+                                            foreach ($categoriaController->listar("") as $cat) {
+                                                ?>
+                                                <option value="<?php echo $cat['id']; ?>" <?php echo ($categoria == $cat['id']) ? "selected" : ""; ?>><?php echo utf8_encode($cat['descricao']); ?></option>
+                                                <?php
+                                            }
                                             ?>
-                                            <option value="<?php echo $peso['id']; ?>" <?php echo ($peso == $peso['id']) ? "selected" : ""; ?>><?php echo $peso['valor'] . " - " . utf8_encode($peso['descricao']); ?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label class="control-label">Descrição:</label>
-                                    <div class="input-group">
-                                        <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao-agenda" onkeyup="abrirModal();" aria-describedby="basic-addon2" value="<?php echo $descricao; ?>">
-                                        <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Peso:</label>
+                                        <select name="peso" class="form-control text-uppercase">
+                                            <option value="">Selecione um</option>
+                                            <?php
+                                            foreach ($pesoController->listar("") as $peso) {
+                                                ?>
+                                                <option value="<?php echo $peso['id']; ?>" <?php echo ($peso == $peso['id']) ? "selected" : ""; ?>><?php echo $peso['valor'] . " - " . utf8_encode($peso['descricao']); ?></option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label">Data:</label>
-                                    <input type="date" name="data" class="form-control text-uppercase" value="<?php echo $data; ?>">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Descrição:</label>
+                                        <div class="input-group">
+                                            <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao-agenda" onkeyup="abrirModal();" aria-describedby="basic-addon2" value="<?php echo $descricao; ?>">
+                                            <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label">Hora:</label>
-                                    <input type="text" name="hora" class="form-control" value="<?php echo $hora; ?>">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Data:</label>
+                                        <input type="date" name="data" class="form-control text-uppercase" value="<?php echo $data; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Hora:</label>
+                                        <input type="text" name="hora" class="form-control" value="<?php echo $hora; ?>">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-footer">
-                                <button class="btn btn-primary" name="cadastrar">Cadastrar</button>
+                            <div class="panel panel-default">
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary" name="cadastrar">Cadastrar</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
         <?php include_once('./imports/import_footer.php'); ?>
         <script src="../resources/js/AgendaJS.js"></script>
     </body>
