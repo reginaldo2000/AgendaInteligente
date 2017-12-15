@@ -146,7 +146,7 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
             <?php
-//            unset($_SESSION['listaAgenda']);
+            unset($_SESSION['listaAgenda']);
         }
         ?>
 
@@ -311,7 +311,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Hora:</label>
-                                        <input type="text" name="hora" class="form-control" value="<?php echo $hora; ?>" required>
+                                        <input type="text" name="hora" class="form-control" value="<?php echo ($hora != "")?date('H:i', strtotime($hora)):""; ?>" required>
                                     </div>
                                 </div>
                             </div>

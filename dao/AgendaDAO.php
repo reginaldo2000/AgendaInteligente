@@ -47,7 +47,7 @@ class AgendaDAO {
 
     public function getHistorico($descricao) {
         try {
-            $sql = "SELECT * FROM agend_hist_agenda_descricao WHERE hist_name LIKE :desc";
+            $sql = "SELECT * FROM agend_hist_agenda_descricao WHERE hist_name LIKE :desc GROUP BY hist_name";
             $stmt = $this->con->prepare($sql);
             $stmt->bindValue(':desc', "%" . $descricao . "%");
             $stmt->execute();
@@ -115,10 +115,13 @@ class AgendaDAO {
     }
     
     public function listaAgenda($descricao) {
-        $sql = "SELECT * FROM $this->table WHERE descricao LIKE :descricao";
+        $sql = "SELECT a.*, p.valor, c.descricao as cat_desc FROM $this->table a INNER JOIN agend_categorias c ON c.id = a.categoria_id "
+                . "INNER JOIN agend_peso p ON p.id = a.peso_id "
+                . "WHERE a.descricao LIKE :descricao ORDER BY p.valor DESC";
         $st = $this->con->prepare($sql);
         $st->bindValue(':descricao', '%'.$descricao.'%');
         $st->execute();
+        return $st->fetchAll();
     }
 
 }

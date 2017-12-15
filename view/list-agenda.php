@@ -5,7 +5,10 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <?php 
+    <?php
+    require_once('../controller/AgendaController.php');
+    $agendaController = AgendaController::getInstance();
+
     include_once('./imports/import_head.php');
     ?>
     <body>
@@ -14,7 +17,7 @@ and open the template in the editor.
         include_once('./imports/import_menu.php');
         ?>
         <div class="container-fluid">
-            <section class="main-content">
+            <section class="main-content" style="margin-bottom: 230px;">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <span class="panel-title">Consulta Agenda</span>
@@ -25,6 +28,7 @@ and open the template in the editor.
                                 <form method="post" action="" class="form-inline">
                                     <label class="control-label">Descrição:</label>
                                     <input type="text" name="desc" class="form-control">
+                                    <button class="btn btn-primary" name="buscar">Buscar</button>
                                 </form>
                             </div>
                         </div>
@@ -42,7 +46,24 @@ and open the template in the editor.
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
+                                    if (isset($_POST['desc'])) {
+                                        $listaAgenda = $agendaController->listaAgenda($_POST['desc']);
+                                        foreach ($listaAgenda as $agenda) {
+                                            ?>
+                                            <tr>
+                                                <td class="text-uppercase"><?php echo utf8_encode($agenda['cat_desc']);?></td>
+                                                <td><?php echo $agenda['valor'];?></td>
+                                                <td class="text-uppercase"><?php echo utf8_encode($agenda['descricao']);?></td>
+                                                <td><?php echo date('d/m/Y', strtotime($agenda['data']));?></td>
+                                                <td><?php echo date('H:i', strtotime($agenda['hora']));?></td>
+                                                <td class="text-center">
+                                                    <i class="fa fa-pencil" title="editar"></i>
+                                                    <i class="fa fa-trash" title="excluir"></i>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
                                     ?>
                                 </tbody>
                             </table>

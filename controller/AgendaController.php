@@ -38,5 +38,9 @@ class AgendaController {
     public function verificaHorariosProximos($data, $hora) {
         return $this->agendaDAO->verificaHorariosProximos($data, $hora);
     }
+    
+    public function listaAgenda($descricao) {
+        return $this->agendaDAO->listaAgenda($descricao);
+    }
 
 }
