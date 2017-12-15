@@ -5,6 +5,7 @@ require_once('../controller/AgendaController.php');
 require_once('../resources/Mensagens.php');
 
 $agendaController = AgendaController::getInstance();
+unset($_SESSION['categoria'], $_SESSION['peso'], $_SESSION['descricao'], $_SESSION['data'], $_SESSION['hora']);
 
 if (isset($_POST['cadastrar'])) {
     $agenda = new Agenda();
@@ -51,5 +52,22 @@ if (isset($_POST['busc'])) {
         $string .= '<tr data-dismiss="modal"><td class="text-uppercase" onclick="selecionarDesc(\'' . $nome . '\');">' . $nome . '</td></tr>';
     }
     echo $string;
+}
+
+if (isset($_POST['confirmar'])) {
+    $agenda = new Agenda();
+    $agenda->setCategoriaID($_POST['categoria']);
+    $agenda->setPesoID($_POST['peso']);
+    $agenda->setDescricao(utf8_decode($_POST['descricao']));
+    $agenda->setData($_POST['data']);
+    $agenda->setHora(date('H:i:s', strtotime($_POST['hora'])));
+
+    if ($agendaController->cadastrar($agenda)) {
+        $_SESSION['msg'] = Mensagens::getMsgSuccess("Agenda cadastrada com sucesso!");
+        header('location: ../view/cad-agenda.php');
+    } else {
+        $_SESSION['msg'] = Mensagens::getMsgError("Erro ao tentar cadastrar a agenda!");
+        header('location: ../view/cad-agenda.php');
+    }
 }
 

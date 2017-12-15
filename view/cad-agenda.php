@@ -27,6 +27,7 @@
     }
 
 
+
     include_once('./imports/import_head.php');
     ?>
     <body>
@@ -85,9 +86,9 @@
                                         foreach ($lista as $agenda) {
                                             ?>
                                             <tr>
-                                                <td class="text-uppercase"><?php echo $agenda['descricao']; ?></td>
+                                                <td class="text-uppercase"><?php echo utf8_encode($agenda['descricao']); ?></td>
                                                 <td><?php echo date('d/m/Y', strtotime($agenda['data'])); ?></td>
-                                                <td><?php echo $agenda['hora']; ?></td>
+                                                <td><?php echo date('H:i', strtotime($agenda['hora'])); ?></td>
                                             </tr>
                                             <?php
                                         }
@@ -112,33 +113,40 @@
                                     <span class="panel-title">Novo Horário</span>
                                 </div>
                                 <div class="panel-body">
-                                    <form method="post" action="">
+                                    <form method="post" action="../transaction/AgendaPHP.php">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Data:</label>
-                                                    <input type="date" name="data" class="form-control">
+                                                    <input type="date" name="data" class="form-control" value="<?php echo $data; ?>"required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Hora:</label>
-                                                    <input type="text" name="hora" class="form-control">
+                                                    <input type="text" name="hora" class="form-control" value="<?php echo date('H:i', strtotime($hora));?>" required>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="hidden">
+                                            <input type="text" name="categoria" value="<?php echo $categoria; ?>">
+                                            <input type="text" name="peso" value="<?php echo $peso; ?>">
+                                            <input type="text" name="descricao" value="<?php echo $descricao; ?>">
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" name="cadastrar">Confirmar Cadastro</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Salvar mudanças</button>
-                        </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
             <?php
-            unset($_SESSION['listaAgenda']);
+//            unset($_SESSION['listaAgenda']);
         }
         ?>
 
@@ -177,14 +185,13 @@
                                                 foreach ($listaHorarios as $hr) {
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $hr['valor'];?></td>
-                                                        <td><?php echo utf8_encode($hr['descricao']); ?></td>
+                                                        <td><?php echo $hr['valor']; ?></td>
+                                                        <td class="text-uppercase"><?php echo utf8_encode($hr['descricao']); ?></td>
                                                         <td><?php echo date('d/m/Y', strtotime($hr['data'])); ?></td>
                                                         <td><?php echo date('H:i', strtotime($hr['hora'])); ?></td>
                                                     </tr>
                                                     <?php
                                                 }
-                                                
                                                 ?>
                                             </tbody>
                                         </table>
@@ -200,20 +207,35 @@
                                         <table class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th>Descrição</th>
+                                                    <th>Data</th>
+                                                    <th>Hora</th>
                                                 </tr>
                                             </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-uppercase"><?php echo utf8_encode($descricao); ?></td>
+                                                    <td><?php echo date('d/m/Y', strtotime($data)); ?></td>
+                                                    <td><?php echo date('H:i', strtotime($hora)); ?></td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                            <button type="button" class="btn btn-primary">Salvar mudanças</button>
+                            <form method="post" action="../transaction/AgendaPHP.php">
+                                <div class="hidden">
+                                    <input type="text" name="categoria" value="<?php echo $categoria; ?>">
+                                    <input type="text" name="peso" value="<?php echo $peso; ?>">
+                                    <input type="text" name="descricao" value="<?php echo $descricao; ?>">
+                                    <input type="text" name="data" value="<?php echo $data; ?>">
+                                    <input type="text" name="hora" value="<?php echo $hora; ?>">
+                                </div>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                <button name="confirmar" class="btn btn-primary">Confirmar</button>
+                            </form>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -240,7 +262,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Categoria:</label>
-                                        <select name="categoria" class="form-control text-uppercase" >
+                                        <select name="categoria" class="form-control text-uppercase" required>
                                             <option value="">Selecione uma</option>
                                             <?php
                                             foreach ($categoriaController->listar("") as $cat) {
@@ -255,7 +277,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Peso:</label>
-                                        <select name="peso" class="form-control text-uppercase">
+                                        <select name="peso" class="form-control text-uppercase" required>
                                             <option value="">Selecione um</option>
                                             <?php
                                             foreach ($pesoController->listar("") as $peso) {
@@ -273,7 +295,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Descrição:</label>
                                         <div class="input-group">
-                                            <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao-agenda" onkeyup="abrirModal();" aria-describedby="basic-addon2" value="<?php echo $descricao; ?>">
+                                            <input type="text" name="descricao" class="form-control text-uppercase" id="form-descricao-agenda" onkeyup="abrirModal();" aria-describedby="basic-addon2" value="<?php echo $descricao; ?>" required="">
                                             <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                                         </div>
                                     </div>
@@ -283,13 +305,13 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Data:</label>
-                                        <input type="date" name="data" class="form-control text-uppercase" value="<?php echo $data; ?>">
+                                        <input type="date" name="data" class="form-control text-uppercase" value="<?php echo $data; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">Hora:</label>
-                                        <input type="text" name="hora" class="form-control" value="<?php echo $hora; ?>">
+                                        <input type="text" name="hora" class="form-control" value="<?php echo $hora; ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -303,7 +325,9 @@
                 </div>
             </section>
         </div>
-        <?php include_once('./imports/import_footer.php'); ?>
+        <?php
+        include_once('./imports/import_footer.php');
+        ?>
         <script src="../resources/js/AgendaJS.js"></script>
     </body>
 </html>

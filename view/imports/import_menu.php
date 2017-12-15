@@ -5,9 +5,11 @@
             <i class="fa fa-bars fa-2x"></i>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="cad-categorias.php">Categorias</a></li>
-            <li><a href="cad-pesos.php">Pesos</a></li>
-            <li><a href="cad-agenda.php">Agenda</a></li>
+            <li><a href="cad-categorias.php"><i class="fa fa-folder-open"></i>&nbsp; Categorias</a></li>
+            <li><a href="cad-pesos.php"><i class="fa fa-resistance"></i>&nbsp; Pesos</a></li>
+            <li><a href="cad-agenda.php"><i class="fa fa-address-book-o"></i>&nbsp; Agenda</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="list-agenda.php"><i class="fa fa-search"></i>&nbsp; Consulta Agenda</a></li>
         </ul>
     </div>
 </nav>

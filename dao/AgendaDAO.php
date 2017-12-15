@@ -82,7 +82,7 @@ class AgendaDAO {
                 $st1->bindValue(':dataF', $dataF);
                 $st1->execute();
                 if ($st1->rowCount() == 0) {
-                    $string .= '<li>' . date('d/m/Y', strtotime($dataI)) . " " . $hora . '</li>';
+                    $string .= '<li>' . date('d/m/Y', strtotime($dataI)) . " " . date('H:i', strtotime($hora)) . '</li>';
                     $cont++;
                 }
                 $novaData = date('Y-m-d', strtotime('+1 day', strtotime($dataI)));
@@ -112,6 +112,13 @@ class AgendaDAO {
             echo $ex->getMessage();
             return null;
         }
+    }
+    
+    public function listaAgenda($descricao) {
+        $sql = "SELECT * FROM $this->table WHERE descricao LIKE :descricao";
+        $st = $this->con->prepare($sql);
+        $st->bindValue(':descricao', '%'.$descricao.'%');
+        $st->execute();
     }
 
 }
